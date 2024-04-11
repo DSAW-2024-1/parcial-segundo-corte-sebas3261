@@ -1,5 +1,16 @@
 {
   "dependencies": {
     "express": "^4.19.2"
-  }
+  },
+  "name": "parcial-segundo-corte-sebas3261",
+  "description": "[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/KsHSEX27)\r ## Examen de Desarrollo Backend con Express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "vercel-build": "echo hello"
+  },
+  "author": "",
+  "license": "ISC"
 }
