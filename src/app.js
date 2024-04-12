@@ -78,7 +78,7 @@ app.get('/users/:count', (req, res) => {
 
 app.use(bodyParser.json());
 
-app.post('/usuarios', (req, res) => {
+app.post('/users', (req, res) => {
   const { nombre, apellido, correo } = req.body;
   if (!nombre || !apellido || !correo) {
     return res.status(400).json({ error: 'Los parámetros nombre, apellido y correo electrónico son obligatorios.' });
