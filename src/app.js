@@ -1,7 +1,9 @@
 const express = require('express');
 const axios = require('axios');
+const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 
 const users = [
   { nombre: 'Samuel', apellido: 'Acero García' },
@@ -35,10 +37,6 @@ const users = [
   { nombre: 'Andrés', apellido: 'Azcona' }
 ];
 
-app.get('/', (req, res) => {
-  res.send('La API está viva');
-});
-
 app.get('/coin/:coinName', async (req, res) => {
   const coinName = req.params.coinName;
 
@@ -57,35 +55,49 @@ app.get('/coin/:coinName', async (req, res) => {
   }
 });
 
-app.get('/users', (req, res) => {
-  let count = parseInt(req.query.count) || users.length;
+app.get('/', (req, res) => {
+  res.send('probando');
+});
+
+app.get('/users/:count', (req, res) => {
+  const count = parseInt(req.params.count);
   const sort = req.query.sort || 'ASC';
 
-  const sortedUsers = [...users].sort((a, b) => {
-    if (sort === 'DESC') {
-      return b.apellido.localeCompare(a.apellido);
-    }
-    return a.apellido.localeCompare(b.apellido);
-  });
+  let sortedUsers;
 
-  const userList = sortedUsers.slice(0, count).map(user => ({
-    nombre: user.nombre,
-    apellido: user.apellido
-  }));
-
-  res.json(userList);
-});
-
-app.post('/users', (req, res) => {
-  const { nombre, apellido, correo, ciudad = 'Bogotá', país = 'Colombia' } = req.body;
-
-  if (!nombre || !apellido || !correo) {
-    return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  if (sort === 'ASC') {
+    sortedUsers = users.slice(0, count);
+  } else if (sort === 'DESC') {
+    sortedUsers = users.slice().reverse().slice(0, count);
+  } else {
+    return res.status(400).send('El parámetro sort debe ser "ASC" o "DESC"');
   }
 
-  const nuevoUsuario = { nombre, apellido, correo, ciudad, país };
+  res.json(sortedUsers);
+});
+
+app.use(bodyParser.json());
+
+app.post('/usuarios', (req, res) => {
+  const { nombre, apellido, correo } = req.body;
+  if (!nombre || !apellido || !correo) {
+    return res.status(400).json({ error: 'Los parámetros nombre, apellido y correo electrónico son obligatorios.' });
+  }
+
+  const ciudad = req.body.ciudad || 'Bogotá';
+  const pais = req.body.pais || 'Colombia';
+
+  const nuevoUsuario = {
+    nombre,
+    apellido,
+    correo,
+    ciudad,
+    pais
+  };
+
   res.status(201).json(nuevoUsuario);
 });
+
 
 app.listen(PORT, () => {
   console.log(`Servidor API corriendo en el puerto ${PORT}`);
