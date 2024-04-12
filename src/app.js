@@ -38,7 +38,7 @@ const users = [
 ];
 
 app.get('/coin/:coinName', async (req, res) => {
-  const coinName = req.params.coinName;
+  let coinName = req.params.coinName.toLowerCase();
 
   try {
     const response = await axios.get(`https://api.coincap.io/v2/assets/${coinName}`);
