@@ -56,7 +56,7 @@ app.get('/coin/:coinName', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('probando');
+  res.send('api parcial DAW de Sebastian Sanchez :)');
 });
 
 app.get('/users/:count', (req, res) => {
